@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "C:\\xampp\\php\\php.exe",
+            "args": [
+                "D:\\Lahiyeler\\E_Commerce_2026\\artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
