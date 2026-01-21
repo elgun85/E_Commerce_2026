@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->string('full_name');
+            $table->string('phone');
+            $table->string('address_line1');
+            $table->string('address_line2')->nullable();
+            $table->string('city');
+            $table->string('state')->nullable();
+            $table->string('postal_code');
+            $table->string('country');
+            $table->boolean('is_default')->default(false);
+            $table->enum('type', ['billing', 'shipping', 'both'])->default('shipping');
             $table->timestamps();
         });
     }
