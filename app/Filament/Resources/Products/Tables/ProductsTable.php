@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -18,19 +19,32 @@ class ProductsTable
     {
         return $table
             ->columns([
-                TextColumn::make('category_id')
+
+                ImageColumn::make('primaryImage.image_path')
+                    ->label('Image')
+                    ->circular()
+                    ->disk('public'),
+                TextColumn::make('category.name')
                     ->numeric()
-                    ->sortable(),
-                TextColumn::make('brand_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('name')
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
                     ->searchable(),
+                TextColumn::make('brand.name')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable()
+                    ->badge()
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('slug')
                     ->searchable(),
                 TextColumn::make('sku')
                     ->label('SKU')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('price')
                     ->money()
                     ->sortable(),
