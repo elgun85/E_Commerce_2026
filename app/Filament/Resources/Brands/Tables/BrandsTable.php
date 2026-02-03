@@ -39,7 +39,7 @@ class BrandsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('created_at', 'Desc')
             ->filters([
                 //
             ])

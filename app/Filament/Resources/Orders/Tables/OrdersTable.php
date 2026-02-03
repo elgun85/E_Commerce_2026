@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Filament\Resources\Customers\CustomerResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -18,19 +21,65 @@ class OrdersTable
         return $table
             ->columns([
                 TextColumn::make('order_number')
+                    ->weight('bold')
+                    ->sortable()
+                    ->copyable()
                     ->searchable(),
-                TextColumn::make('customer_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('customer.name')
+                    ->searchable()
+                    ->sortable()
+                    ->color('primary')
+                    ->url(fn($record) => $record->customer ? CustomerResource::getUrl('edit', ['record' => $record->customer]) : null),
                 TextColumn::make('coupon_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('subtotal')
-                    ->numeric()
-                    ->sortable(),
+
                 TextColumn::make('discount_amount')
                     ->numeric()
                     ->sortable(),
+
+                TextColumn::make('total')
+                    ->money('USD')
+                    ->color('success')
+                    ->weight('bold')
+                    ->sortable(),
+
+                TextColumn::make('payment_status')
+                    ->badge(),
+
+                TextColumn::make('items_count')
+                    ->counts('items')
+                    ->color('info')
+                    ->badge(),
+
+                TextColumn::make('tracking_number')
+                    ->toggleable()
+                    ->copyable()
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+
+                TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+
+
+
+
+                /* 
                 TextColumn::make('shipping_cost')
                     ->money()
                     ->sortable(),
@@ -58,31 +107,40 @@ class OrdersTable
                     ->searchable(),
                 TextColumn::make('payment_method')
                     ->badge(),
-                TextColumn::make('payment_status')
-                    ->searchable(),
+
                 TextColumn::make('transaction_id')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge(),
-                TextColumn::make('tracking_number')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
+                    ->badge(), 
+                    */
+
+
+            ])->defaultSort('created_at', 'Desc')
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'shipped' => 'Shipped',
+                        'delivered' => 'Delivered',
+                        'cancelled' => 'Cancelled',
+                    ])
+                    ->multiple()
+                    ->native(),
+                SelectFilter::make('payment_status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                        'refunded' => 'Refunded',
+                    ])
+                    ->multiple()
+                    ->native(false)
+
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

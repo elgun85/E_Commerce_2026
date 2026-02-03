@@ -90,7 +90,7 @@ class ProductsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('created_at', 'Desc')
             ->filters([
                 TrashedFilter::make(),
             ])

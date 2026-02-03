@@ -7,7 +7,7 @@ use App\Filament\Resources\Coupens\Pages\EditCoupen;
 use App\Filament\Resources\Coupens\Pages\ListCoupens;
 use App\Filament\Resources\Coupens\Schemas\CoupenForm;
 use App\Filament\Resources\Coupens\Tables\CoupensTable;
-use App\Models\Coupen;
+use App\Models\Coupon;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,9 +16,11 @@ use Filament\Tables\Table;
 
 class CoupenResource extends Resource
 {
-    protected static ?string $model = Coupen::class;
+    protected static ?string $model = Coupon::class;
+    protected static string|\UnitEnum|null $navigationGroup = 'Sales';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Ticket;
 
     protected static ?string $recordTitleAttribute = 'code';
 
