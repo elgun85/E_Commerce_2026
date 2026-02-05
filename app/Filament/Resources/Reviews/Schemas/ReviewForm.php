@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Reviews\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class ReviewForm
@@ -13,7 +14,15 @@ class ReviewForm
     {
         return $schema
             ->components([
-                TextInput::make('product_id')
+
+                Section::make('Review Details')
+                    ->columns(2)
+                    ->schema([
+
+                        Toggle::make('is_approved')
+                            ->required(),
+                    ]),
+                /*                 TextInput::make('product_id')
                     ->required()
                     ->numeric(),
                 TextInput::make('customer_id')
@@ -31,9 +40,8 @@ class ReviewForm
                     ->default(null)
                     ->columnSpanFull(),
                 Toggle::make('is_verified_purchase')
-                    ->required(),
-                Toggle::make('is_approved')
-                    ->required(),
+                    ->required(), */
+
             ]);
     }
 }
