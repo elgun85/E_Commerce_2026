@@ -135,12 +135,13 @@ class ProductForm
                                             ->default(0),
 
 
-                                        TextInput::make('Low_stock_threshold')
+                                        TextInput::make('low_stock_threshold')
                                             ->label('Low Stock Threshold')
                                             ->numeric()
                                             ->minValue(0)
                                             ->default(0)
                                             ->helperText('Notify when stock is below this quantity'),
+
                                         Select::make('stock_status')
                                             ->options(
                                                 [
